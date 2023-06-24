@@ -1,0 +1,22 @@
+---
+debug: false
+openstack_service_publicuri_proto: http
+install_method: source
+dhcp_domain: cloud.local
+rabbitmq_use_ssl: false
+apply_security_hardening: false
+haproxy_keepalived_external_vip_cidr: 192.168.1.217/24
+haproxy_keepalived_internal_vip_cidr: 192.168.10.217/24
+haproxy_keepalived_external_interface: br-vlan
+haproxy_keepalived_internal_interface: br-mgmt
+
+neutron_plugin_type: ml2.lxb
+neutron_ml2_drivers_type: "flat,vlan,vxlan"
+neutron_plugin_base:
+  - router
+  - metering
+
+horizon_images_upload_mode: legacy
+
+cinder_default_volume_type: lvm
+cinder_service_backup_program_enabled: true

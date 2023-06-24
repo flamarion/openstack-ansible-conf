@@ -1,0 +1,267 @@
+---
+cidr_networks:
+  container: 192.168.10.0/24
+  tunnel: 192.168.30.0/24
+  storage: 192.168.20.0/24
+
+used_ips:
+  - "192.168.10.1"
+  - "192.168.10.200,192.168.10.250"
+  - "192.168.30.1,192.168.30.50"
+  - "192.168.20.1,192.168.20.50"
+
+global_overrides:
+  external_lb_vip_address: 192.168.1.217
+  internal_lb_vip_address: 192.168.10.217
+  management_bridge: "br-mgmt"
+  provider_networks:
+    - network:
+        group_binds:
+          - all_containers
+          - hosts
+        type: "raw"
+        container_bridge: "br-mgmt"
+        container_interface: "eth1"
+        container_type: "veth"
+        ip_from_q: "container"
+        is_container_address: true
+    - network:
+        group_binds:
+          - glance_api
+          - cinder_api
+          - cinder_volume
+          - nova_compute
+        type: "raw"
+        container_bridge: "br-storage"
+        container_type: "veth"
+        container_interface: "eth2"
+        ip_from_q: "storage"
+    - network:
+        group_binds:
+          - neutron_linuxbridge_agent
+        container_bridge: "br-vxlan"
+        container_type: "veth"
+        container_interface: "eth10"
+        ip_from_q: "tunnel"
+        type: "vxlan"
+        range: "1:1000"
+        net_name: "vxlan"
+    - network:
+        group_binds:
+          - neutron_linuxbridge_agent
+        container_bridge: "br-vlan"
+        container_type: "veth"
+        container_interface: "eth11"
+        host_bind_override: "eth11"
+        type: "flat"
+        net_name: "flat"
+    - network:
+        group_binds:
+          - neutron_linuxbridge_agent
+        container_bridge: "br-vlan"
+        container_type: "veth"
+        container_interface: "eth12"
+        type: "vlan"
+        range: "101:200,301:400"
+        net_name: "vlan"
+
+###
+### Infrastructure
+###
+
+shared-infra_hosts:
+  nuc1:
+    ip: 192.168.10.224
+  nuc2:
+    ip: 192.168.10.225
+  nuc3:
+    ip: 192.168.10.226
+
+repo-infra_hosts:
+  nuc1:
+    ip: 192.168.10.224
+  nuc2:
+    ip: 192.168.10.225
+  nuc3:
+    ip: 192.168.10.226
+
+haproxy_hosts:
+  nuc1:
+    ip: 192.168.10.224
+  nuc2:
+    ip: 192.168.10.225
+  nuc3:
+    ip: 192.168.10.226
+
+coordination_hosts:
+  nuc1:
+    ip: 192.168.10.224
+  nuc2:
+    ip: 192.168.10.225
+  nuc3:
+    ip: 192.168.10.226
+
+log_hosts:
+  nuc1:
+    ip: 192.168.10.224
+  nuc2:
+    ip: 192.168.10.225
+  nuc3:
+    ip: 192.168.10.226
+
+###
+### OpenStack
+###
+
+os-infra_hosts:
+  nuc1:
+    ip: 192.168.10.224
+  nuc2:
+    ip: 192.168.10.225
+  nuc3:
+    ip: 192.168.10.226
+
+identity_hosts:
+  nuc1:
+    ip: 192.168.10.224
+  nuc2:
+    ip: 192.168.10.225
+  nuc3:
+    ip: 192.168.10.226
+
+network_hosts:
+  nuc1:
+    ip: 192.168.10.224
+  nuc2:
+    ip: 192.168.10.225
+  nuc3:
+    ip: 192.168.10.226
+
+compute-infra_hosts:
+  nuc1:
+    ip: 192.168.10.224
+  nuc2:
+    ip: 192.168.10.225
+  nuc3:
+    ip: 192.168.10.226
+
+placement-infra_hosts:
+  nuc1:
+    ip: 192.168.10.224
+  nuc2:
+    ip: 192.168.10.225
+  nuc3:
+    ip: 192.168.10.226
+
+storage-infra_hosts:
+  nuc1:
+    ip: 192.168.10.224
+  nuc2:
+    ip: 192.168.10.225
+  nuc3:
+    ip: 192.168.10.226
+
+# ceilometer (telemetry data collection)
+metering-infra_hosts:
+  nuc1:
+    ip: 192.168.10.224
+  nuc2:
+    ip: 192.168.10.225
+  nuc3:
+    ip: 192.168.10.226
+
+# aodh (telemetry alarm service)
+metering-alarm_hosts:
+  nuc1:
+    ip: 192.168.10.224
+  nuc2:
+    ip: 192.168.10.225
+  nuc3:
+    ip: 192.168.10.226
+
+# gnocchi (telemetry metrics storage)
+metrics_hosts:
+  nuc1:
+    ip: 192.168.10.224
+  nuc2:
+    ip: 192.168.10.225
+  nuc3:
+    ip: 192.168.10.226
+
+metering-compute_hosts:
+  mac1:
+    ip: 192.168.10.223
+  nuc1:
+    ip: 192.168.10.224
+  nuc2:
+    ip: 192.168.10.225
+  nuc3:
+    ip: 192.168.10.226
+
+orchestration_hosts:
+  nuc1:
+    ip: 192.168.10.224
+  nuc2:
+    ip: 192.168.10.225
+  nuc3:
+    ip: 192.168.10.226
+
+dashboard_hosts:
+  nuc1:
+    ip: 192.168.10.224
+  nuc2:
+    ip: 192.168.10.225
+  nuc3:
+    ip: 192.168.10.226
+
+compute_hosts:
+  mac1:
+    ip: 192.168.10.223
+  nuc1:
+    ip: 192.168.10.224
+  nuc2:
+    ip: 192.168.10.225
+  nuc3:
+    ip: 192.168.10.226
+
+storage_hosts:
+  mac1:
+    ip: 192.168.10.223
+    container_vars:
+      cinder_backends:
+        lvm:
+          volume_backend_name: LVM_iSCSI
+          volume_driver: cinder.volume.drivers.lvm.LVMVolumeDriver
+          volume_group: cinder-volumes
+          iscsi_ip_address: "192.168.20.15"
+          # limit_container_types: cinder_volume
+  nuc1:
+    ip: 192.168.10.224
+    container_vars:
+      cinder_backends:
+        lvm:
+          volume_backend_name: LVM_iSCSI
+          volume_driver: cinder.volume.drivers.lvm.LVMVolumeDriver
+          volume_group: cinder-volumes
+          iscsi_ip_address: "192.168.20.15"
+          # limit_container_types: cinder_volume
+  nuc2:
+    ip: 192.168.10.225
+    container_vars:
+      cinder_backends:
+        lvm:
+          volume_backend_name: LVM_iSCSI
+          volume_driver: cinder.volume.drivers.lvm.LVMVolumeDriver
+          volume_group: cinder-volumes
+          iscsi_ip_address: "192.168.20.15"
+          # limit_container_types: cinder_volume
+  nuc3:
+    ip: 192.168.10.226
+    container_vars:
+      cinder_backends:
+        lvm:
+          volume_backend_name: LVM_iSCSI1
+          volume_driver: cinder.volume.drivers.lvm.LVMVolumeDriver
+          volume_group: cinder-volumes
+          iscsi_ip_address: "192.168.20.15"
+          # limit_container_types: cinder_volume
